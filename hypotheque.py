@@ -10,6 +10,7 @@ def total_versements (nombre_annees):                                           
     total_de_versements = nomb_versement * nombre_annees
     return total_de_versements
 
+
 def interet (taux_hypothecaire): 
     taux_hypothecaire = taux_hypothecaire / 100                                        #convertir le pourcentage du taux en decimal
 
@@ -17,10 +18,12 @@ def interet (taux_hypothecaire):
     interet_mensuel = round((interet_mensuel), 4)                                      #arrondir l'intérêt mensuel à decimales
     return interet_mensuel
 
+
 def total_interet (total_de_versements, interet_mensuel):                              #calcule le taux mensuel total 
     interet_total = (1 + interet_mensuel) ** -(total_de_versements)
     interet_total = round(interet_total, 4)
     return interet_total
+
 
 def versement(montant_pret, interet_mensuel, interet_total):                           #calcule le montant à versé pour le mois
 
@@ -30,8 +33,21 @@ def versement(montant_pret, interet_mensuel, interet_total):                    
 
     return versement_mensuel
 
-def hypotheque(montant_pret, taux_hypothecaire, nombre_annees):
 
+def montant(montant_pret, capital):        
+    montant_pret = montant_pret - capital                                              #le nouveau montant restant est le montant payé sans 
+    montant_pret = round(montant_pret, 4)                                              #intérêt deduit du montant preté 
+    return montant_pret            
+     
+             
+def calcul_capital(versement_mensuel, interet_paye):                   
+    capital = versement_mensuel - interet_paye                                         #on calcule le capital qui est le montant payé  
+    capital = round(capital, 4)                                                        #hors intérêt                                     
+    return capital 
+
+
+def hypotheque(montant_pret, taux_hypothecaire, nombre_annees):                        #cette fonction etablie tout les principaux calculs de l'hypotheque
+                                                                                       
     total_de_versements = total_versements(nombre_annees)
         
     interet_mensuel = interet(taux_hypothecaire)                                
@@ -51,15 +67,7 @@ def hypotheque(montant_pret, taux_hypothecaire, nombre_annees):
         interet_paye = montant_pret * interet_mensuel                                  #calcul l'intérêt à payer sur le montant du mois en cours
         interet_paye = round(interet_paye, 4)          
                            
-        def montant(montant_pret, capital):        
-            montant_pret = montant_pret - capital                                      #le nouveau montant restant est le montant payé sans 
-            montant_pret = round(montant_pret, 4)                                      #intérêt deduit du montant preté 
-            return montant_pret        
                
-        def calcul_capital(versement_mensuel, interet_paye):           
-            capital = versement_mensuel - interet_paye                                 #on calcule le capital qui est le montant payé  
-            capital = round(capital, 4)                                                #hors intérêt                                     
-            return capital                                                              
            
         if montant_pret < versement_mensuel:                                           #on ne doit pas payer plus que ce qui reste, donc
             versement_mensuel = montant_pret + interet_paye                            #le dernier versement mensuel devient le montant restant 
@@ -85,10 +93,11 @@ def hypotheque(montant_pret, taux_hypothecaire, nombre_annees):
 
     print("Fin du calcul") 
 
+
 def verification(montant_pret, taux_hypothecaire, nombre_annees):
     while montant_pret < 0 or nombre_annees <= 0 or taux_hypothecaire < 0:             #on test si aucune valeur n'est negative
 
-        print('Veuillez entrer des valeurs supérieures à zéro(0)')
+        print('Veuillez entrer des valeurs supérieures à zéro(0)')                     #on modifira par la suite, uniquement les vraibles qui sont négatives
         if montant_pret <= 0: 
             montant_pret = int(input('Entrer le montant du prêt: '))
         elif taux_hypothecaire <= 0:
@@ -101,6 +110,7 @@ def verification(montant_pret, taux_hypothecaire, nombre_annees):
         taux_hypothecaire = float(input('Entrer un taux hypothécaire en decimal inférieur à 100: '))                                                          
      
     hypotheque (montant_pret, taux_hypothecaire, nombre_annees) 
+
 
 #pour l'entrée manuelle des valeurs par l'utilisateur
 montant_pret = int(input('Entrer le montant du prêt: '))
